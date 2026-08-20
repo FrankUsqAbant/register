@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevDomain Studio — Gestor Personal de Subdominios .is-a.dev</title>
+<meta name="description" content="Panel de control personal para verificar disponibilidad, gestionar registros DNS y automatizar solicitudes de subdominios .is-a.dev en GitHub.">
+<meta name="color-scheme" content="only dark">
+<meta name="darkreader-lock">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #090A0F;
+  --surface: #11131A;
+  --surface-hover: #161922;
+  --surface-raised: #1A1D27;
+  --border: #232735;
+  --border-active: #3B4256;
+  
+  --accent: #00F5D4;
+  --accent-soft: rgba(0, 245, 212, 0.12);
+  --success: #10B981;
+  --success-soft: rgba(16, 185, 129, 0.12);
+  --danger: #EF4444;
+  --danger-soft: rgba(239, 68, 68, 0.12);
+  --warning: #F59E0B;
+  
+  --text: #F1F5F9;
+  --text-muted: #8E9BAE;
+  --text-dim: #546076;
+  
+  --radius: 10px;
+  --radius-lg: 16px;
+  --max-width: 1100px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; background: var(--bg); color: var(--text); scroll-behavior: smooth; }
+body {
+  font-family: 'Geist', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg); color: var(--text);
+  min-height: 100vh; line-height: 1.5; -webkit-font-smoothing: antialiased;
+}
+
+/* Header */
+.topbar {
+  border-bottom: 1px solid var(--border); background: rgba(9, 10, 15, 0.85);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  position: sticky; top: 0; z-index: 50;
+}
+.topbar-inner {
+  max-width: var(--max-width); margin: 0 auto; height: 60px; padding: 0 20px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.brand {
+  display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 1rem; color: var(--text);
+  text-decoration: none;
+}
+.brand-badge {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 600;
+  background: var(--surface-raised); border: 1px solid var(--border);
+  padding: 2px 8px; border-radius: 6px; color: var(--accent);
+}
+.nav-actions { display: flex; align-items: center; gap: 14px; }
+.btn-secondary {
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text); padding: 7px 14px; border-radius: var(--radius);
+  font-size: 0.82rem; font-weight: 500; text-decoration: none; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s;
+}
+.btn-secondary:hover { background: var(--surface-hover); border-color: var(--border-active); }
+
+/* Main Container */
+.container { max-width: var(--max-width); margin: 0 auto; padding: 36px 20px 80px; }
+
+/* Page Title & Intro */
+.page-head { margin-bottom: 32px; }
+.page-head h1 { font-size: 1.85rem; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 6px; }
+.page-head p { color: var(--text-muted); font-size: 0.95rem; }
+
+/* Section Cards */
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 24px; margin-bottom: 24px;
+}
+.card-header {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;
+}
+.card-title { font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.card-subtitle { font-size: 0.85rem; color: var(--text-muted); }
+
+/* Live Domain Search */
+.search-wrapper { position: relative; margin-bottom: 16px; }
+.search-box {
+  display: flex; align-items: center; background: var(--bg);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 4px 6px 4px 16px; transition: border-color 0.2s;
+}
+.search-box:focus-within { border-color: var(--accent); }
+.search-input {
+  flex: 1; background: none; border: none; outline: none;
+  font-family: 'JetBrains Mono', monospace; font-size: 1rem; color: var(--text);
+}
+.search-suffix {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; color: var(--text-dim);
+  padding-right: 12px; font-weight: 500;
+}
+.btn-check {
+  background: var(--surface-raised); border: 1px solid var(--border);
+  color: var(--text); padding: 8px 16px; border-radius: 8px;
+  font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+}
+.btn-check:hover { background: var(--border-active); color: var(--accent); }
+
+/* Result Pill */
+.status-pill {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 18px; border-radius: var(--radius); font-size: 0.88rem;
+  border: 1px solid transparent; margin-top: 12px;
+}
+.status-pill.available {
+  background: var(--success-soft); border-color: rgba(16, 185, 129, 0.3); color: #A7F3D0;
+}
+.status-pill.taken {
+  background: var(--danger-soft); border-color: rgba(239, 68, 68, 0.3); color: #FECACA;
+}
+.status-pill.loading {
+  background: var(--surface-raised); border-color: var(--border); color: var(--text-muted);
+}
+.pill-action {
+  background: #10B981; color: #000; border: none; padding: 6px 14px;
+  border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 4px;
+}
+.pill-action:hover { opacity: 0.9; }
+
+/* My Projects Table */
+.projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
+.project-card {
+  background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 18px; transition: border-color 0.2s; position: relative;
+}
+.project-card:hover { border-color: var(--border-active); }
+.project-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
+.project-name { font-weight: 600; font-size: 1rem; color: var(--text); }
+.project-domain { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; color: var(--accent); }
+.project-target { font-size: 0.8rem; color: var(--text-muted); margin-top: 6px; }
+.badge-status {
+  font-size: 0.72rem; font-weight: 600; padding: 2px 8px; border-radius: 4px;
+  background: var(--surface-raised); border: 1px solid var(--border); color: var(--text-muted);
+}
+.badge-status.ready { background: var(--success-soft); color: var(--success); border-color: rgba(16, 185, 129, 0.3); }
+
+/* Configurator Form & Code Preview Split */
+.config-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.form-group { margin-bottom: 16px; }
+.form-label { display: block; font-size: 0.82rem; font-weight: 500; color: var(--text-muted); margin-bottom: 6px; }
+.form-input {
+  width: 100%; background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 10px 14px; color: var(--text);
+  font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; outline: none;
+  transition: border-color 0.2s;
+}
+.form-input:focus { border-color: var(--accent); }
+
+.type-tabs { display: flex; gap: 8px; margin-bottom: 14px; }
+.type-tab {
+  flex: 1; background: var(--bg); border: 1px solid var(--border);
+  padding: 8px 12px; border-radius: var(--radius); font-size: 0.82rem;
+  font-weight: 500; color: var(--text-muted); cursor: pointer; text-align: center;
+  transition: all 0.2s;
+}
+.type-tab.active { background: var(--surface-raised); border-color: var(--accent); color: var(--text); }
+
+/* Code Editor Block */
+.code-panel {
+  background: #06070A; border: 1px solid var(--border); border-radius: var(--radius);
+  overflow: hidden; display: flex; flex-direction: column;
+}
+.code-bar {
+  background: var(--surface); padding: 10px 16px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between; font-size: 0.78rem; color: var(--text-muted);
+}
+.code-content {
+  padding: 16px; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
+  line-height: 1.65; color: #E2E8F0; overflow-x: auto; flex: 1;
+}
+.code-keyword { color: #F472B6; }
+.code-val { color: #34D399; }
+
+.btn-primary {
+  width: 100%; background: var(--text); color: var(--bg); font-weight: 600;
+  padding: 12px 18px; border-radius: var(--radius); border: none; cursor: pointer;
+  font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px;
+  text-decoration: none; margin-top: 16px; transition: opacity 0.2s;
+}
+.btn-primary:hover { opacity: 0.9; }
+
+/* Responsive */
+@media (max-width: 800px) {
+  .config-layout { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <a href="#" class="brand">
+      <span>DevDomain</span>
+      <span class="brand-badge">.is-a.dev</span>
+    </a>
+    <div class="nav-actions">
+      <a href="https://github.com/FrankUsqAbant/register" target="_blank" class="btn-secondary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        <span>Mi Repositorio</span>
+      </a>
+      <a href="#crear" class="btn-secondary" style="border-color: var(--accent); color: var(--accent);">+ Nuevo Registro</a>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- PAGE HEADER -->
+  <div class="page-head">
+    <h1>Gestor Personal de Subdominios</h1>
+    <p>Comprueba disponibilidad en tiempo real y genera solicitudes oficiales de subdominios .is-a.dev para tus proyectos.</p>
+  </div>
+
+  <!-- 1. LIVE DOMAIN CHECKER -->
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">🔍 Comprobar Disponibilidad en Tiempo Real</div>
+        <div class="card-subtitle">Consulta la base de datos en vivo de is-a-dev/register</div>
+      </div>
+    </div>
+
+    <div class="search-wrapper">
+      <div class="search-box">
+        <input type="text" id="domainSearchInput" class="search-input" placeholder="ej. frankuer o aurea-dental" value="aurea-dental">
+        <span class="search-suffix">.is-a.dev</span>
+        <button class="btn-check" onclick="checkLiveAvailability()">Verificar</button>
+      </div>
+    </div>
+
+    <div id="statusPill" class="status-pill available">
+      <div>
+        <strong>aurea-dental.is-a.dev</strong> está <span>100% DISPONIBLE para registro</span>.
+      </div>
+      <button class="pill-action" onclick="useSubdomain('aurea-dental', 'frankusqabant.github.io/aurea-dental')">Configurar Registro →</button>
+    </div>
+  </div>
+
+  <!-- 2. MY ACTIVE DOMAINS & PROJECTS -->
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">📁 Mis Proyectos & Subdominios Sugeridos</div>
+        <div class="card-subtitle">Subdominios recomendados listos para tus proyectos en GitHub Pages</div>
+      </div>
+    </div>
+
+    <div class="projects-grid">
+      <!-- Project 1: Portafolio Bootstrap -->
+      <div class="project-card" style="border-color: rgba(0, 245, 212, 0.4); background: rgba(0, 245, 212, 0.03);">
+        <div class="project-top">
+          <div class="project-name">📁 Portafolio Bootstrap</div>
+          <span class="badge-status ready" style="color: var(--accent); border-color: var(--accent);">Activo · Listo</span>
+        </div>
+        <div class="project-domain">portafolio.is-a.dev</div>
+        <div class="project-target">↳ frankusqabant.github.io/portafolio-adaptable-bootstrap</div>
+        <div style="display: flex; gap: 8px; margin-top: 14px;">
+          <button class="btn-secondary" style="flex:1;justify-content:center;border-color:var(--accent);color:var(--accent);" onclick="useSubdomain('portafolio', 'frankusqabant.github.io', 'CNAME')">Usar CNAME →</button>
+          <button class="btn-secondary" style="flex:1;justify-content:center;" onclick="useSubdomain('portafolio', 'https://frankusqabant.github.io/portafolio-adaptable-bootstrap', 'URL')">Usar Redirect →</button>
+        </div>
+      </div>
+
+      <!-- Project 2: Áurea Dental -->
+      <div class="project-card">
+        <div class="project-top">
+          <div class="project-name">Áurea Dental</div>
+          <span class="badge-status ready">Producción</span>
+        </div>
+        <div class="project-domain">aurea-dental.is-a.dev</div>
+        <div class="project-target">↳ frankusqabant.github.io/aurea-dental</div>
+        <button class="btn-secondary" style="width:100%;margin-top:14px;justify-content:center;" onclick="useSubdomain('aurea-dental', 'frankusqabant.github.io', 'CNAME')">Preparar Registro →</button>
+      </div>
+
+      <!-- Project 3: Alias Personal -->
+      <div class="project-card">
+        <div class="project-top">
+          <div class="project-name">Portfolio Global</div>
+          <span class="badge-status ready">Personal</span>
+        </div>
+        <div class="project-domain">frankuer.is-a.dev</div>
+        <div class="project-target">↳ frankusqabant.github.io</div>
+        <button class="btn-secondary" style="width:100%;margin-top:14px;justify-content:center;" onclick="useSubdomain('frankuer', 'frankusqabant.github.io', 'CNAME')">Preparar Registro →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. CONFIGURATOR & PULL REQUEST STUDIO -->
+  <div class="card" id="crear">
+    <div class="card-header">
+      <div>
+        <div class="card-title">⚙️ Generador de Registro DNS & Pull Request</div>
+        <div class="card-subtitle">Genera el archivo JSON válido según el esquema oficial de is-a-dev</div>
+      </div>
+    </div>
+
+    <div class="config-layout">
+      <!-- Left: Form Controls -->
+      <div>
+        <div class="form-group">
+          <label class="form-label">Tipo de Registro:</label>
+          <div class="type-tabs">
+            <button class="type-tab active" onclick="setRecordType('CNAME')">CNAME (GitHub Pages)</button>
+            <button class="type-tab" onclick="setRecordType('A')">A (IP Servidor)</button>
+            <button class="type-tab" onclick="setRecordType('URL')">URL Redirect</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Subdominio deseado:</label>
+          <input type="text" class="form-input" id="cfgSubdomain" value="aurea-dental" placeholder="nombre" oninput="renderCode()">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" id="targetLabel">Destino CNAME (ej. frankusqabant.github.io):</label>
+          <input type="text" class="form-input" id="cfgTarget" value="frankusqabant.github.io" placeholder="usuario.github.io" oninput="renderCode()">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;" class="form-group">
+          <div>
+            <label class="form-label">Usuario GitHub:</label>
+            <input type="text" class="form-input" id="cfgOwner" value="FrankUsqAbant" oninput="renderCode()">
+          </div>
+          <div>
+            <label class="form-label">Email de contacto:</label>
+            <input type="email" class="form-input" id="cfgEmail" value="frankusqabant@gmail.com" oninput="renderCode()">
+          </div>
+        </div>
+
+        <button class="btn-primary" onclick="openGitHubDirectPR()">
+          <span>Abrir Pull Request Oficial en GitHub ↗</span>
+        </button>
+      </div>
+
+      <!-- Right: Live Code Output -->
+      <div class="code-panel">
+        <div class="code-bar">
+          <span id="codeFileName">domains/aurea-dental.json</span>
+          <span style="color: var(--success); font-weight: 600;">✓ Schema Valid</span>
+        </div>
+        <pre class="code-content" id="codeOutput">
+{
+  <span class="code-keyword">"owner"</span>: {
+    <span class="code-keyword">"username"</span>: <span class="code-val">"FrankUsqAbant"</span>,
+    <span class="code-keyword">"email"</span>: <span class="code-val">"frankusqabant@gmail.com"</span>
+  },
+  <span class="code-keyword">"records"</span>: {
+    <span class="code-keyword">"CNAME"</span>: <span class="code-val">"frankusqabant.github.io"</span>
+  }
+}</pre>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+let currentRecordType = 'CNAME';
+
+async function checkLiveAvailability() {
+  const input = document.getElementById('domainSearchInput').value.trim().toLowerCase();
+  const pill = document.getElementById('statusPill');
+  
+  if (!input) return;
+  
+  pill.className = 'status-pill loading';
+  pill.innerHTML = `<div>Verificando disponibilidad de <strong>${input}.is-a.dev</strong> en GitHub...</div>`;
+  
+  try {
+    const res = await fetch(`https://raw.githubusercontent.com/is-a-dev/register/main/domains/${input}.json`);
+    if (res.status === 404) {
+      pill.className = 'status-pill available';
+      pill.innerHTML = `
+        <div><strong>${input}.is-a.dev</strong> está <span>100% DISPONIBLE para registro</span>.</div>
+        <button class="pill-action" onclick="useSubdomain('${input}', 'frankusqabant.github.io')">Configurar Registro →</button>
+      `;
+    } else if (res.ok) {
+      const data = await res.json();
+      const owner = data.owner?.username || 'desconocido';
+      pill.className = 'status-pill taken';
+      pill.innerHTML = `<div><strong>${input}.is-a.dev</strong> ya está ocupado por @${owner}. Prueba con otro nombre.</div>`;
+    } else {
+      pill.className = 'status-pill available';
+      pill.innerHTML = `<div><strong>${input}.is-a.dev</strong> está disponible.</div>`;
+    }
+  } catch (err) {
+    pill.className = 'status-pill available';
+    pill.innerHTML = `<div><strong>${input}.is-a.dev</strong> está disponible.</div>`;
+  }
+}
+
+function useSubdomain(name, target, type = 'CNAME') {
+  document.getElementById('cfgSubdomain').value = name;
+  document.getElementById('cfgTarget').value = target;
+  setRecordType(type);
+  renderCode();
+  document.getElementById('crear').scrollIntoView({ behavior: 'smooth' });
+}
+
+function setRecordType(type) {
+  currentRecordType = type;
+  document.querySelectorAll('.type-tab').forEach(t => t.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  
+  const targetLabel = document.getElementById('targetLabel');
+  const targetInput = document.getElementById('cfgTarget');
+  
+  if (type === 'CNAME') {
+    targetLabel.innerText = 'Destino CNAME (ej. frankusqabant.github.io):';
+    targetInput.value = 'frankusqabant.github.io';
+  } else if (type === 'A') {
+    targetLabel.innerText = 'Dirección IP del Servidor (IPv4):';
+    targetInput.value = '185.199.108.153';
+  } else if (type === 'URL') {
+    targetLabel.innerText = 'URL de Redirección:';
+    targetInput.value = 'https://frankusqabant.github.io/aurea-dental';
+  }
+  renderCode();
+}
+
+function renderCode() {
+  const name = document.getElementById('cfgSubdomain').value.trim().toLowerCase() || 'nombre';
+  const owner = document.getElementById('cfgOwner').value.trim() || 'FrankUsqAbant';
+  const email = document.getElementById('cfgEmail').value.trim() || 'frankusqabant@gmail.com';
+  const target = document.getElementById('cfgTarget').value.trim() || 'frankusqabant.github.io';
+  
+  document.getElementById('codeFileName').innerText = `domains/${name}.json`;
+  
+  const output = `{\n  <span class="code-keyword">"owner"</span>: {\n    <span class="code-keyword">"username"</span>: <span class="code-val">"${owner}"</span>,\n    <span class="code-keyword">"email"</span>: <span class="code-val">"${email}"</span>\n  },\n  <span class="code-keyword">"records"</span>: {\n    <span class="code-keyword">"${currentRecordType}"</span>: <span class="code-val">"${target}"</span>\n  }\n}`;
+  document.getElementById('codeOutput').innerHTML = output;
+}
+
+function openGitHubDirectPR() {
+  const name = document.getElementById('cfgSubdomain').value.trim().toLowerCase() || 'nombre';
+  const owner = document.getElementById('cfgOwner').value.trim() || 'FrankUsqAbant';
+  const email = document.getElementById('cfgEmail').value.trim() || 'frankusqabant@gmail.com';
+  const target = document.getElementById('cfgTarget').value.trim() || 'frankusqabant.github.io';
+  
+  const jsonObj = {
+    owner: { username: owner, email: email },
+    records: { [currentRecordType]: target }
+  };
+  
+  const fileContent = JSON.stringify(jsonObj, null, 2);
+  const prUrl = `https://github.com/is-a-dev/register/new/main?filename=domains/${name}.json&value=${encodeURIComponent(fileContent)}`;
+  window.open(prUrl, '_blank');
+}
+</script>
+
+</body>
+</html>
