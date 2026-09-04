@@ -148,50 +148,53 @@ body {
   display: flex; align-items: center; background: #050608;
   border: 1px solid rgba(0, 245, 212, 0.4);
   border-radius: var(--radius); padding: 6px 8px 6px 18px;
-  box-shadow: 0 0 25px rgba(0, 245, 212, 0.15);
-  transition: all 0.3s ease;
+  box-shadow: 0 0 30px rgba(0, 245, 212, 0.15);
+  transition: all 0.25s ease;
 }
 .search-glow-box:focus-within {
   border-color: var(--accent);
-  box-shadow: 0 0 35px rgba(0, 245, 212, 0.3);
+  box-shadow: 0 0 35px var(--accent-glow);
 }
-.search-icon { color: var(--accent); margin-right: 12px; font-size: 1.1rem; }
+.search-icon { font-size: 1.1rem; opacity: 0.7; margin-right: 8px; }
 .search-input {
   flex: 1; background: transparent; border: none; outline: none;
-  font-family: var(--font-mono); font-size: 1.05rem; color: #FFFFFF; font-weight: 500;
+  color: #FFFFFF; font-family: var(--font-mono); font-size: 1.05rem; font-weight: 600;
 }
 .search-suffix {
-  font-family: var(--font-mono); font-size: 0.95rem; color: var(--text-dim);
-  padding-right: 12px; font-weight: 600;
+  font-family: var(--font-mono); color: var(--accent); font-weight: 600;
+  margin-right: 12px; font-size: 0.95rem;
 }
 .btn-verify {
   background: var(--accent); color: #000; border: none; padding: 10px 20px;
   border-radius: 8px; font-weight: 700; font-size: 0.88rem; cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s;
 }
-.btn-verify:hover { transform: translateY(-1px); box-shadow: 0 4px 16px var(--accent-glow); }
+.btn-verify:hover { opacity: 0.9; transform: scale(1.02); }
 
-/* Live Pill Results */
+/* Availability Status Pill */
 .status-pill {
-  margin-top: 18px; padding: 14px 20px; border-radius: var(--radius);
-  font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;
-  border: 1px solid transparent; transition: all 0.3s ease;
+  margin-top: 16px; border-radius: var(--radius); padding: 14px 18px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 0.88rem; transition: all 0.3s ease;
 }
 .status-pill.available {
-  background: var(--success-soft); border-color: rgba(16, 185, 129, 0.4); color: #A7F3D0;
+  background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #34D399;
 }
 .status-pill.taken {
-  background: var(--danger-soft); border-color: rgba(244, 63, 94, 0.4); color: #FECDD3;
+  background: rgba(244, 63, 94, 0.12); border: 1px solid rgba(244, 63, 94, 0.35);
+  color: #FB7185;
 }
 .status-pill.loading {
-  background: var(--surface-raised); border-color: var(--border); color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border);
+  color: var(--text-muted);
 }
 .btn-pill-action {
-  background: #10B981; color: #000; border: none; padding: 7px 16px;
-  border-radius: 6px; font-weight: 700; font-size: 0.82rem; cursor: pointer;
-  display: inline-flex; align-items: center; gap: 6px; transition: opacity 0.2s;
+  background: rgba(0, 245, 212, 0.15); border: 1px solid var(--accent);
+  color: var(--accent); padding: 6px 14px; border-radius: 6px; font-size: 0.8rem;
+  font-weight: 600; cursor: pointer; transition: all 0.2s;
 }
-.btn-pill-action:hover { opacity: 0.9; }
+.btn-pill-action:hover { background: var(--accent); color: #000; }
 
 /* ── Section Cards ── */
 .section-card {
@@ -201,6 +204,7 @@ body {
 }
 .section-header {
   display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px;
+  flex-wrap: wrap; gap: 12px;
 }
 .section-title {
   font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; gap: 10px;
@@ -256,22 +260,73 @@ body {
   background: var(--surface-hover); border-color: var(--accent); color: var(--accent);
 }
 
-/* ── GitHub Repositories Selector ── */
+/* ── GitHub Repositories Selector Toolbar ── */
+.repos-toolbar {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 16px;
+  background: #050608; border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 12px 16px;
+}
+.user-search-group {
+  display: flex; align-items: center; gap: 8px; flex: 1; min-width: 280px;
+}
+.user-input {
+  flex: 1; background: #0E1118; border: 1px solid var(--border); border-radius: 6px;
+  padding: 8px 12px; color: #FFF; font-family: var(--font-mono); font-size: 0.88rem; outline: none;
+}
+.user-input:focus { border-color: var(--accent); }
+.btn-load-repos {
+  background: var(--surface-raised); border: 1px solid var(--border); color: var(--text);
+  padding: 8px 14px; border-radius: 6px; font-size: 0.82rem; font-weight: 600;
+  cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px;
+}
+.btn-load-repos:hover { background: var(--surface-hover); border-color: var(--accent); color: var(--accent); }
+.filter-repos-input {
+  background: #0E1118; border: 1px solid var(--border); border-radius: 6px;
+  padding: 8px 12px; color: #FFF; font-family: var(--font-sans); font-size: 0.85rem;
+  outline: none; width: 220px;
+}
+.filter-repos-input:focus { border-color: var(--accent); }
+
+/* Selected Repo Banner */
+.selected-repo-banner {
+  background: rgba(0, 245, 212, 0.08); border: 1px solid rgba(0, 245, 212, 0.35);
+  border-radius: var(--radius); padding: 12px 18px; margin-bottom: 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 0.88rem; animation: fadeIn 0.3s ease;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+
 .repos-container {
-  display: flex; gap: 10px; overflow-x: auto; padding-bottom: 8px; margin-top: 12px;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px;
+  max-height: 380px; overflow-y: auto; padding-right: 4px;
 }
 .repo-chip {
-  flex: 0 0 auto; background: #08090D; border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 12px 16px; min-width: 220px;
-  cursor: pointer; transition: all 0.2s;
+  background: #08090D; border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 14px; transition: all 0.2s; display: flex; flex-direction: column; justify-content: space-between;
 }
 .repo-chip:hover {
-  border-color: var(--accent); background: rgba(0, 245, 212, 0.04);
+  border-color: var(--accent-glow); background: rgba(0, 245, 212, 0.03);
 }
-.repo-chip-name { font-weight: 600; font-size: 0.9rem; color: var(--text); margin-bottom: 4px; }
-.repo-chip-meta { font-size: 0.76rem; color: var(--text-muted); display: flex; justify-content: space-between; }
-.btn-import-repo {
-  font-size: 0.75rem; color: var(--accent); margin-top: 8px; display: inline-block; font-weight: 600;
+.repo-chip.active {
+  border-color: var(--accent); background: rgba(0, 245, 212, 0.06);
+  box-shadow: 0 0 16px rgba(0, 245, 212, 0.2);
+}
+.repo-chip-name {
+  font-weight: 700; font-size: 0.95rem; color: var(--text); margin-bottom: 4px;
+  word-break: break-word; font-family: var(--font-mono);
+}
+.repo-chip-meta {
+  font-size: 0.76rem; color: var(--text-muted); display: flex; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.btn-choose-repo {
+  width: 100%; background: var(--surface-raised); border: 1px solid var(--border);
+  color: var(--accent); padding: 8px 10px; border-radius: 6px; font-size: 0.8rem;
+  font-weight: 700; cursor: pointer; transition: all 0.2s; text-align: center;
+}
+.btn-choose-repo:hover {
+  background: var(--accent); color: #000; border-color: var(--accent);
+  box-shadow: 0 4px 14px var(--accent-glow);
 }
 
 /* ── Configurator & Terminal Layout ── */
@@ -312,7 +367,11 @@ body {
 /* Code Terminal */
 .code-terminal {
   background: #040507; border: 1px solid var(--border); border-radius: var(--radius);
-  overflow: hidden; display: flex; flex-direction: column;
+  overflow: hidden; display: flex; flex-direction: column; transition: all 0.3s;
+}
+.code-terminal.highlight-glow {
+  border-color: var(--accent);
+  box-shadow: 0 0 30px var(--accent-glow);
 }
 .terminal-bar {
   background: #0C0E14; padding: 10px 16px; border-bottom: 1px solid var(--border);
@@ -330,7 +389,7 @@ body {
 .terminal-actions { display: flex; gap: 8px; }
 .btn-term-action {
   background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border);
-  color: var(--text); padding: 3px 10px; border-radius: 5px; font-size: 0.72rem;
+  color: var(--text); padding: 4px 10px; border-radius: 5px; font-size: 0.75rem;
   font-family: var(--font-mono); cursor: pointer; transition: all 0.2s;
 }
 .btn-term-action:hover {
@@ -380,6 +439,8 @@ body {
 @media (max-width: 580px) {
   .stepper { grid-template-columns: 1fr; }
   .domains-grid { grid-template-columns: 1fr; }
+  .repos-toolbar { flex-direction: column; align-items: stretch; }
+  .filter-repos-input { width: 100%; }
 }
 </style>
 </head>
@@ -400,7 +461,7 @@ body {
     <div class="nav-actions">
       <a href="https://github.com/FrankUsqAbant/register" target="_blank" rel="noopener noreferrer" class="btn-nav">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-        <span>@FrankUsqAbant/register</span>
+        <span>Mi Repositorio</span>
       </a>
       <a href="#editor" class="btn-nav" style="border-color: var(--accent); color: var(--accent);">+ Nuevo Registro</a>
     </div>
@@ -411,22 +472,22 @@ body {
 
   <!-- 1. HERO SEARCH AVAILABILITY -->
   <section class="hero-search-card">
-    <h1 class="hero-title">Real-Time Domain Availability Search</h1>
-    <p class="hero-subtitle">Comprueba al instante si tu nombre soñado está libre en la base de datos oficial de is-a-dev.</p>
+    <h1 class="hero-title">Verificación de Disponibilidad de Subdominios</h1>
+    <p class="hero-subtitle">Escribe cualquier nombre y comprueba en tiempo real si está libre en la base oficial de is-a-dev.</p>
     
     <div class="search-container">
       <div class="search-glow-box">
         <span class="search-icon">🔍</span>
-        <input type="text" id="domainSearchInput" class="search-input" placeholder="ej. opengravity, frankuer o tu-proyecto" value="opengravity" autocomplete="off" spellcheck="false">
+        <input type="text" id="domainSearchInput" class="search-input" placeholder="ej. opengravity, mi-proyecto o portafolio" value="opengravity" autocomplete="off" spellcheck="false" onkeydown="if(event.key==='Enter') checkLiveAvailability()">
         <span class="search-suffix">.is-a.dev</span>
         <button class="btn-verify" onclick="checkLiveAvailability()">Verificar</button>
       </div>
 
       <div id="statusPill" class="status-pill available">
         <div>
-          <strong>opengravity.is-a.dev</strong> está <span style="color: #A7F3D0; font-weight: 700;">100% DISPONIBLE</span> para registrar.
+          <strong>opengravity.is-a.dev</strong> está <span style="color: #A7F3D0; font-weight: 700;">100% DISPONIBLE</span>.
         </div>
-        <button class="btn-pill-action" onclick="useSubdomain('opengravity', 'frankusqabant.github.io/OpenGravity')">Configurar Registro →</button>
+        <button class="btn-pill-action" onclick="chooseSubdomain('opengravity')">⚡ Elegir este Subdominio →</button>
       </div>
     </div>
   </section>
@@ -436,7 +497,7 @@ body {
     <div class="section-header">
       <div>
         <div class="section-title">⚡ Mis Subdominios Activos & Monitor DNS</div>
-        <div class="section-subtitle">Registros DNS configurados en tu repositorio con verificación en vivo</div>
+        <div class="section-subtitle">Registros DNS configurados en tu repositorio con verificación en tiempo real</div>
       </div>
       <button class="btn-nav" onclick="refreshAllDNS()">🔄 Actualizar DNS</button>
     </div>
@@ -456,7 +517,7 @@ body {
         </div>
         <div class="domain-actions">
           <a href="https://portafolio.is-a.dev" target="_blank" rel="noopener noreferrer" class="btn-action-sm">Abrir Web ↗</a>
-          <button class="btn-action-sm" onclick="useSubdomain('portafolio', 'frankusqabant.github.io', 'CNAME')">Editar</button>
+          <button class="btn-action-sm" onclick="chooseCustomDomain('portafolio', 'frankusqabant.github.io', 'CNAME', 'FrankUsqAbant')">Editar en Configurator</button>
         </div>
       </div>
 
@@ -474,7 +535,7 @@ body {
         </div>
         <div class="domain-actions">
           <a href="https://aurea-dental.is-a.dev" target="_blank" rel="noopener noreferrer" class="btn-action-sm">Abrir Web ↗</a>
-          <button class="btn-action-sm" onclick="useSubdomain('aurea-dental', 'frankusqabant.github.io', 'CNAME')">Editar</button>
+          <button class="btn-action-sm" onclick="chooseCustomDomain('aurea-dental', 'frankusqabant.github.io', 'CNAME', 'FrankUsqAbant')">Editar en Configurator</button>
         </div>
       </div>
 
@@ -492,44 +553,46 @@ body {
         </div>
         <div class="domain-actions">
           <a href="https://leer-es-pensar.is-a.dev" target="_blank" rel="noopener noreferrer" class="btn-action-sm">Abrir Web ↗</a>
-          <button class="btn-action-sm" onclick="useSubdomain('leer-es-pensar', 'FrankUsqAbant.github.io', 'CNAME')">Editar</button>
+          <button class="btn-action-sm" onclick="chooseCustomDomain('leer-es-pensar', 'FrankUsqAbant.github.io', 'CNAME', 'FrankUsqAbant')">Editar en Configurator</button>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 3. IMPORT FROM GITHUB REPOSITORIES -->
+  <!-- 3. UNIVERSAL GITHUB REPOSITORY SELECTOR -->
   <section class="section-card">
     <div class="section-header">
       <div>
-        <div class="section-title">📂 Vincular con Repositorios de @FrankUsqAbant</div>
-        <div class="section-subtitle">Haz clic en cualquier proyecto para autorellenar la configuración de subdominio</div>
+        <div class="section-title">📂 Explorar y Elegir Repositorio de GitHub</div>
+        <div class="section-subtitle">Elige cualquier usuario u organización. Cuando elijas un repositorio, se autoconfigurará de inmediato en el editor.</div>
       </div>
-      <span class="top-status" id="reposCountBadge">Cargando repositorios...</span>
+      <span class="top-status" id="reposCountBadge">Conectando...</span>
     </div>
 
+    <!-- Toolbar: Change User and Filter -->
+    <div class="repos-toolbar">
+      <div class="user-search-group">
+        <label style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">Usuario/Org:</label>
+        <input type="text" id="githubUserInput" class="user-input" value="FrankUsqAbant" placeholder="ej. FrankUsqAbant, vercel, tu-usuario" spellcheck="false" onkeydown="if(event.key==='Enter') fetchUserRepos()">
+        <button class="btn-load-repos" onclick="fetchUserRepos()">🔍 Cargar</button>
+        <button class="btn-load-repos" style="font-size: 0.75rem;" onclick="resetToOwner()" title="Restablecer a FrankUsqAbant">↺ Mío</button>
+      </div>
+      <input type="text" id="repoFilterInput" class="filter-repos-input" placeholder="Filtrar repositorios..." oninput="filterRepos()">
+    </div>
+
+    <!-- Active Selection Banner -->
+    <div id="selectedRepoBanner" class="selected-repo-banner" style="display: none;">
+      <div>
+        <span>Repositorio elegido: </span>
+        <strong id="selectedRepoName" style="color: var(--accent); font-family: var(--font-mono);">—</strong>
+        <span style="color: var(--text-muted); margin-left: 8px;" id="selectedRepoDetails"></span>
+      </div>
+      <span class="domain-badge">✓ Autoconfigurado en el editor</span>
+    </div>
+
+    <!-- Repositories Grid Container -->
     <div class="repos-container" id="reposList">
-      <!-- Repos chips populated via JS -->
-      <div class="repo-chip" onclick="useSubdomain('opengravity', 'frankusqabant.github.io/OpenGravity')">
-        <div class="repo-chip-name">OpenGravity</div>
-        <div class="repo-chip-meta"><span>Catálogo Revista</span><span>HTML/JS</span></div>
-        <span class="btn-import-repo">Usar opengravity.is-a.dev →</span>
-      </div>
-      <div class="repo-chip" onclick="useSubdomain('proyecto-curso-html', 'frankusqabant.github.io/proyecto-curso-html')">
-        <div class="repo-chip-name">proyecto-curso-html</div>
-        <div class="repo-chip-meta"><span>Curso HTML</span><span>JavaScript</span></div>
-        <span class="btn-import-repo">Usar en subdominio →</span>
-      </div>
-      <div class="repo-chip" onclick="useSubdomain('youttube-git', 'frankusqabant.github.io/youttube-git')">
-        <div class="repo-chip-name">youttube-git</div>
-        <div class="repo-chip-meta"><span>Git Workflow</span><span>JavaScript</span></div>
-        <span class="btn-import-repo">Usar en subdominio →</span>
-      </div>
-      <div class="repo-chip" onclick="useSubdomain('devdomain', 'frankusqabant.github.io/register')">
-        <div class="repo-chip-name">register</div>
-        <div class="repo-chip-meta"><span>DevDomain Studio</span><span>HTML</span></div>
-        <span class="btn-import-repo">Usar en subdominio →</span>
-      </div>
+      <!-- Repos chips populated dynamically via JS -->
     </div>
   </section>
 
@@ -537,8 +600,8 @@ body {
   <section class="section-card" id="editor">
     <div class="section-header">
       <div>
-        <div class="section-title">⚙️ DNS Record Configurator & Code Terminal</div>
-        <div class="section-subtitle">Genera el archivo JSON válido según el esquema oficial de is-a-dev</div>
+        <div class="section-title">⚙️ Configurador de Registros DNS & Terminal de Código</div>
+        <div class="section-subtitle">Genera el archivo JSON listo para el pull request oficial en is-a-dev</div>
       </div>
     </div>
 
@@ -557,8 +620,8 @@ body {
 
         <div class="form-group">
           <label class="form-label">Subdominio deseado (sin .is-a.dev):</label>
-          <input type="text" class="form-input" id="cfgSubdomain" value="opengravity" placeholder="ej. opengravity" oninput="renderCode()">
-          <div class="form-help">Solo minúsculas, números y guiones. Mínimo 2 caracteres.</div>
+          <input type="text" class="form-input" id="cfgSubdomain" value="opengravity" placeholder="ej. opengravity" oninput="sanitizeAndRenderSubdomain()">
+          <div class="form-help" id="subdomainHelp">Solo minúsculas, números y guiones. Mínimo 2 caracteres.</div>
         </div>
 
         <div class="form-group">
@@ -585,7 +648,7 @@ body {
       </div>
 
       <!-- Right: The Code Terminal -->
-      <div class="code-terminal">
+      <div class="code-terminal" id="codeTerminalContainer">
         <div class="terminal-bar">
           <div class="terminal-dots">
             <span class="tdot tdot-red"></span>
@@ -620,13 +683,13 @@ body {
     <div class="stepper">
       <div class="step-box">
         <div class="step-num">PASO 01</div>
-        <div class="step-title">Verificar y Configurar</div>
-        <div class="step-desc">Elige un nombre disponible y define el destino CNAME de tu GitHub Pages.</div>
+        <div class="step-title">Elegir Repositorio y Dominio</div>
+        <div class="step-desc">Elige el repositorio que deseas vincular y el subdominio libre que prefieras.</div>
       </div>
       <div class="step-box">
         <div class="step-num">PASO 02</div>
-        <div class="step-title">Generar el Archivo</div>
-        <div class="step-desc">El botón de PR crea automáticamente el archivo en <code>domains/tu-nombre.json</code>.</div>
+        <div class="step-title">Autoconfiguración</div>
+        <div class="step-desc">Al elegirlo, el CNAME y el JSON oficial de is-a-dev se arman en automático.</div>
       </div>
       <div class="step-box">
         <div class="step-num">PASO 03</div>
@@ -645,60 +708,141 @@ body {
 
 <script>
 let currentRecordType = 'CNAME';
+let fetchedReposCache = [];
+
+// ── Security Helper: Escape HTML to Prevent XSS ──
+function escapeHtml(str) {
+  if (typeof str !== 'string') return '';
+  return str.replace(/[&<>"']/g, match => {
+    const escapes = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+    return escapes[match];
+  });
+}
+
+// ── Sanitize Subdomain Format ──
+function sanitizeSubdomainName(raw) {
+  return raw.toLowerCase().trim()
+    .replace(/[^a-z0-9-]/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
 
 // ── Check Live Availability ──
 async function checkLiveAvailability() {
-  const input = document.getElementById('domainSearchInput').value.trim().toLowerCase();
+  const rawInput = document.getElementById('domainSearchInput').value;
+  const input = sanitizeSubdomainName(rawInput);
   const pill = document.getElementById('statusPill');
   
-  if (!input) return;
+  if (!input) {
+    pill.className = 'status-pill loading';
+    pill.innerHTML = '<div>Por favor, introduce un nombre de subdominio válido.</div>';
+    return;
+  }
   
   pill.className = 'status-pill loading';
-  pill.innerHTML = `<div>Verificando disponibilidad de <strong>${input}.is-a.dev</strong> en la base de datos oficial...</div>`;
+  pill.innerHTML = `<div>Verificando disponibilidad de <strong>${escapeHtml(input)}.is-a.dev</strong> en la base de datos oficial...</div>`;
   
   try {
-    const res = await fetch(`https://raw.githubusercontent.com/is-a-dev/register/main/domains/${input}.json`);
+    const res = await fetch(`https://raw.githubusercontent.com/is-a-dev/register/main/domains/${encodeURIComponent(input)}.json`);
     if (res.status === 404) {
       pill.className = 'status-pill available';
       pill.innerHTML = `
-        <div><strong>${input}.is-a.dev</strong> está <span style="color: #A7F3D0; font-weight: 700;">100% DISPONIBLE</span> para registrar.</div>
-        <button class="btn-pill-action" onclick="useSubdomain('${input}', 'frankusqabant.github.io')">Configurar Registro →</button>
+        <div><strong>${escapeHtml(input)}.is-a.dev</strong> está <span style="color: #A7F3D0; font-weight: 700;">100% DISPONIBLE</span>.</div>
+        <button class="btn-pill-action" onclick="chooseSubdomain('${escapeHtml(input)}')">⚡ Elegir este Subdominio →</button>
       `;
     } else if (res.ok) {
       const data = await res.json();
-      const owner = data.owner?.username || 'desconocido';
+      const owner = data.owner?.username ? escapeHtml(data.owner.username) : 'desconocido';
       pill.className = 'status-pill taken';
       pill.innerHTML = `
-        <div><strong>${input}.is-a.dev</strong> ya está ocupado por <strong>@${owner}</strong>.</div>
-        <span style="font-size: 0.8rem; opacity: 0.8;">Prueba con una variante o tu nombre de proyecto.</span>
+        <div><strong>${escapeHtml(input)}.is-a.dev</strong> ya está ocupado por <strong>@${owner}</strong>.</div>
+        <span style="font-size: 0.8rem; opacity: 0.8;">Prueba con otro nombre o variante.</span>
       `;
     } else {
       pill.className = 'status-pill available';
-      pill.innerHTML = `<div><strong>${input}.is-a.dev</strong> está libre para registrar.</div>`;
+      pill.innerHTML = `
+        <div><strong>${escapeHtml(input)}.is-a.dev</strong> está libre para registrar.</div>
+        <button class="btn-pill-action" onclick="chooseSubdomain('${escapeHtml(input)}')">⚡ Elegir este Subdominio →</button>
+      `;
     }
   } catch (err) {
     pill.className = 'status-pill available';
-    pill.innerHTML = `<div><strong>${input}.is-a.dev</strong> está disponible para registrar.</div>`;
+    pill.innerHTML = `
+      <div><strong>${escapeHtml(input)}.is-a.dev</strong> está disponible para registrar.</div>
+      <button class="btn-pill-action" onclick="chooseSubdomain('${escapeHtml(input)}')">⚡ Elegir este Subdominio →</button>
+    `;
   }
 }
 
-// ── Use Subdomain into Editor ──
-function useSubdomain(name, target, type = 'CNAME') {
-  document.getElementById('cfgSubdomain').value = name;
-  document.getElementById('cfgTarget').value = target;
-  
-  // Set tab active
-  const tabs = document.querySelectorAll('.type-tab');
-  tabs.forEach(t => {
-    if (t.textContent.includes(type)) t.classList.add('active');
-    else t.classList.remove('active');
-  });
-  
-  setRecordType(type);
+// ── Choose Subdomain from Search ──
+function chooseSubdomain(name) {
+  const cleanName = sanitizeSubdomainName(name);
+  document.getElementById('cfgSubdomain').value = cleanName;
   renderCode();
-  
+  flashTerminal();
   const editor = document.getElementById('editor');
   if (editor) editor.scrollIntoView({ behavior: 'smooth' });
+}
+
+// ── Choose Active Domain for Editing ──
+function chooseCustomDomain(name, target, type = 'CNAME', owner = 'FrankUsqAbant') {
+  document.getElementById('cfgSubdomain').value = sanitizeSubdomainName(name);
+  document.getElementById('cfgTarget').value = target;
+  if (owner) document.getElementById('cfgOwner').value = owner;
+  setRecordType(type);
+  renderCode();
+  flashTerminal();
+  const editor = document.getElementById('editor');
+  if (editor) editor.scrollIntoView({ behavior: 'smooth' });
+}
+
+// ── Choose Repository Action (User Choice -> Instant Automation) ──
+function selectRepository(owner, repoName) {
+  const cleanRepo = repoName.trim();
+  const cleanOwner = owner.trim();
+  const cleanSubdomain = sanitizeSubdomainName(cleanRepo);
+  
+  // Determine canonical GitHub Pages CNAME
+  let targetCname = `${cleanOwner.toLowerCase()}.github.io`;
+  if (cleanRepo.toLowerCase() !== `${cleanOwner.toLowerCase()}.github.io`) {
+    targetCname = `${cleanOwner.toLowerCase()}.github.io/${cleanRepo}`;
+  }
+  
+  // Set in form
+  document.getElementById('cfgSubdomain').value = cleanSubdomain;
+  document.getElementById('cfgTarget').value = targetCname;
+  document.getElementById('cfgOwner').value = cleanOwner;
+  
+  // Update banner
+  const banner = document.getElementById('selectedRepoBanner');
+  const nameEl = document.getElementById('selectedRepoName');
+  const detailsEl = document.getElementById('selectedRepoDetails');
+  if (banner && nameEl) {
+    banner.style.display = 'flex';
+    nameEl.innerText = `${cleanOwner}/${cleanRepo}`;
+    if (detailsEl) detailsEl.innerText = `↳ Subdominio: ${cleanSubdomain}.is-a.dev`;
+  }
+  
+  // Update active chip state
+  document.querySelectorAll('.repo-chip').forEach(chip => chip.classList.remove('active'));
+  const activeChip = document.getElementById(`repo-chip-${cleanRepo}`);
+  if (activeChip) activeChip.classList.add('active');
+  
+  // Auto-render code instantly
+  renderCode();
+  flashTerminal();
+  
+  // Smooth scroll to editor
+  const editor = document.getElementById('editor');
+  if (editor) editor.scrollIntoView({ behavior: 'smooth' });
+}
+
+// ── Visual Highlight for Terminal on Update ──
+function flashTerminal() {
+  const term = document.getElementById('codeTerminalContainer');
+  if (!term) return;
+  term.classList.add('highlight-glow');
+  setTimeout(() => term.classList.remove('highlight-glow'), 1200);
 }
 
 // ── Set Record Type ──
@@ -707,23 +851,31 @@ function setRecordType(type, event) {
   if (event && event.currentTarget) {
     document.querySelectorAll('.type-tab').forEach(t => t.classList.remove('active'));
     event.currentTarget.classList.add('active');
+  } else {
+    document.querySelectorAll('.type-tab').forEach(t => {
+      if (t.textContent.includes(type)) t.classList.add('active');
+      else t.classList.remove('active');
+    });
   }
   
   const targetLabel = document.getElementById('targetLabel');
   const targetInput = document.getElementById('cfgTarget');
   const targetHelp = document.getElementById('targetHelp');
+  const owner = document.getElementById('cfgOwner').value.trim() || 'FrankUsqAbant';
   
   if (type === 'CNAME') {
     targetLabel.innerText = 'Destino CNAME (ej. usuario.github.io):';
-    targetInput.value = 'frankusqabant.github.io';
     targetHelp.innerText = 'Dominio canónico de GitHub Pages o Vercel sin https://';
+    if (!targetInput.value.includes('.github.io')) {
+      targetInput.value = `${owner.toLowerCase()}.github.io`;
+    }
   } else if (type === 'A') {
     targetLabel.innerText = 'Dirección IPv4 del Servidor:';
     targetInput.value = '185.199.108.153';
     targetHelp.innerText = 'IP pública de tu VPS o servidor web.';
   } else if (type === 'URL') {
     targetLabel.innerText = 'URL de Redirección (301):';
-    targetInput.value = 'https://frankusqabant.github.io/OpenGravity/';
+    targetInput.value = `https://${owner.toLowerCase()}.github.io/`;
     targetHelp.innerText = 'URL completa de destino incluyendo https://';
   } else if (type === 'TXT') {
     targetLabel.innerText = 'Registro TXT:';
@@ -733,23 +885,37 @@ function setRecordType(type, event) {
   renderCode();
 }
 
+// ── Sanitize on Typing Subdomain ──
+function sanitizeAndRenderSubdomain() {
+  const input = document.getElementById('cfgSubdomain');
+  const help = document.getElementById('subdomainHelp');
+  const clean = sanitizeSubdomainName(input.value);
+  
+  if (input.value !== clean && input.value.length > 0) {
+    help.innerHTML = `<span style="color: var(--warning);">Ajustado automáticamente a formato DNS válido: <strong>${escapeHtml(clean)}</strong></span>`;
+  } else {
+    help.innerText = 'Solo minúsculas, números y guiones. Mínimo 2 caracteres.';
+  }
+  renderCode();
+}
+
 // ── Render Formatted Code ──
 function renderCode() {
-  const name = document.getElementById('cfgSubdomain').value.trim().toLowerCase() || 'nombre';
+  const name = sanitizeSubdomainName(document.getElementById('cfgSubdomain').value) || 'subdominio';
   const owner = document.getElementById('cfgOwner').value.trim() || 'FrankUsqAbant';
   const email = document.getElementById('cfgEmail').value.trim() || 'frankusqabant@gmail.com';
   const target = document.getElementById('cfgTarget').value.trim() || 'frankusqabant.github.io';
   
   document.getElementById('codeFileName').innerText = `domains/${name}.json`;
   
-  const output = `<span class="k-punct">{</span>\n  <span class="k-key">"owner"</span><span class="k-punct">:</span> <span class="k-punct">{</span>\n    <span class="k-key">"username"</span><span class="k-punct">:</span> <span class="k-str">"${owner}"</span><span class="k-punct">,</span>\n    <span class="k-key">"email"</span><span class="k-punct">:</span> <span class="k-str">"${email}"</span>\n  <span class="k-punct">}</span><span class="k-punct">,</span>\n  <span class="k-key">"records"</span><span class="k-punct">:</span> <span class="k-punct">{</span>\n    <span class="k-key">"${currentRecordType}"</span><span class="k-punct">:</span> <span class="k-str">"${target}"</span>\n  <span class="k-punct">}</span>\n<span class="k-punct">}</span>`;
+  const output = `<span class="k-punct">{</span>\n  <span class="k-key">"owner"</span><span class="k-punct">:</span> <span class="k-punct">{</span>\n    <span class="k-key">"username"</span><span class="k-punct">:</span> <span class="k-str">"${escapeHtml(owner)}"</span><span class="k-punct">,</span>\n    <span class="k-key">"email"</span><span class="k-punct">:</span> <span class="k-str">"${escapeHtml(email)}"</span>\n  <span class="k-punct">}</span><span class="k-punct">,</span>\n  <span class="k-key">"records"</span><span class="k-punct">:</span> <span class="k-punct">{</span>\n    <span class="k-key">"${escapeHtml(currentRecordType)}"</span><span class="k-punct">:</span> <span class="k-str">"${escapeHtml(target)}"</span>\n  <span class="k-punct">}</span>\n<span class="k-punct">}</span>`;
   
   document.getElementById('codeOutput').innerHTML = output;
 }
 
-// ── Open GitHub PR ──
+// ── Open GitHub PR Directly in Official Repo ──
 function openGitHubDirectPR() {
-  const name = document.getElementById('cfgSubdomain').value.trim().toLowerCase() || 'nombre';
+  const name = sanitizeSubdomainName(document.getElementById('cfgSubdomain').value) || 'subdominio';
   const owner = document.getElementById('cfgOwner').value.trim() || 'FrankUsqAbant';
   const email = document.getElementById('cfgEmail').value.trim() || 'frankusqabant@gmail.com';
   const target = document.getElementById('cfgTarget').value.trim() || 'frankusqabant.github.io';
@@ -760,13 +926,13 @@ function openGitHubDirectPR() {
   };
   
   const fileContent = JSON.stringify(jsonObj, null, 2);
-  const prUrl = `https://github.com/is-a-dev/register/new/main?filename=domains/${name}.json&value=${encodeURIComponent(fileContent)}`;
-  window.open(prUrl, '_blank');
+  const prUrl = `https://github.com/is-a-dev/register/new/main?filename=domains/${encodeURIComponent(name)}.json&value=${encodeURIComponent(fileContent)}`;
+  window.open(prUrl, '_blank', 'noopener,noreferrer');
 }
 
 // ── Copy JSON with Feedback ──
 function copyJSON() {
-  const name = document.getElementById('cfgSubdomain').value.trim().toLowerCase() || 'nombre';
+  const name = sanitizeSubdomainName(document.getElementById('cfgSubdomain').value) || 'subdominio';
   const owner = document.getElementById('cfgOwner').value.trim() || 'FrankUsqAbant';
   const email = document.getElementById('cfgEmail').value.trim() || 'frankusqabant@gmail.com';
   const target = document.getElementById('cfgTarget').value.trim() || 'frankusqabant.github.io';
@@ -791,7 +957,7 @@ function copyJSON() {
 
 // ── Download JSON ──
 function downloadJSON() {
-  const name = document.getElementById('cfgSubdomain').value.trim().toLowerCase() || 'subdominio';
+  const name = sanitizeSubdomainName(document.getElementById('cfgSubdomain').value) || 'subdominio';
   const owner = document.getElementById('cfgOwner').value.trim() || 'FrankUsqAbant';
   const email = document.getElementById('cfgEmail').value.trim() || 'frankusqabant@gmail.com';
   const target = document.getElementById('cfgTarget').value.trim() || 'frankusqabant.github.io';
@@ -817,10 +983,10 @@ async function checkDomainDNS(domain, targetId, badgeId) {
   if (!statusEl) return;
   
   try {
-    const res = await fetch(`https://dns.google/resolve?name=${domain}&type=CNAME`);
+    const res = await fetch(`https://dns.google/resolve?name=${encodeURIComponent(domain)}&type=CNAME`);
     const data = await res.json();
     if (data.Answer && data.Answer.length > 0) {
-      const cnameVal = data.Answer[0].data;
+      const cnameVal = escapeHtml(data.Answer[0].data);
       statusEl.innerHTML = `<span style="color: var(--success);">✓ Resuelto (${cnameVal.replace(/\.$/, '')})</span>`;
       if (badgeEl) {
         badgeEl.innerHTML = '● DNS Activo (En línea)';
@@ -840,32 +1006,137 @@ function refreshAllDNS() {
   checkDomainDNS('leer-es-pensar.is-a.dev', 'dns-status-leer', 'dns-badge-leer');
 }
 
-// ── Fetch Repositories from GitHub ──
+// ── Fetch Repositories for ANY GitHub User / Org ──
 async function fetchUserRepos() {
+  const userInput = document.getElementById('githubUserInput');
   const reposCountEl = document.getElementById('reposCountBadge');
   const reposListEl = document.getElementById('reposList');
+  const rawUser = userInput.value.trim();
+  const user = rawUser.replace(/^@/, '') || 'FrankUsqAbant';
+  
+  if (reposCountEl) reposCountEl.innerText = `Cargando repos de @${escapeHtml(user)}...`;
   
   try {
-    const res = await fetch('https://api.github.com/users/FrankUsqAbant/repos?sort=updated&per_page=10');
-    if (!res.ok) return;
-    const repos = await res.json();
-    
-    if (reposCountEl) reposCountEl.innerText = `${repos.length} Repos Recientes`;
-    
-    if (repos && repos.length > 0) {
-      const valid = repos.filter(r => !r.fork && r.name !== 'FrankUsqAbant');
-      const html = valid.map(r => `
-        <div class="repo-chip" onclick="useSubdomain('${r.name.toLowerCase()}', 'frankusqabant.github.io/${r.name}')">
-          <div class="repo-chip-name">${r.name}</div>
-          <div class="repo-chip-meta"><span>⭐ ${r.stargazers_count || 0}</span><span>${r.language || 'Web'}</span></div>
-          <span class="btn-import-repo">Usar ${r.name.toLowerCase()}.is-a.dev →</span>
-        </div>
-      `).join('');
-      if (reposListEl) reposListEl.innerHTML = html;
+    const res = await fetch(`https://api.github.com/users/${encodeURIComponent(user)}/repos?sort=updated&per_page=30`);
+    if (!res.ok) {
+      if (res.status === 404) {
+        if (reposCountEl) reposCountEl.innerText = `Usuario @${escapeHtml(user)} no encontrado`;
+        if (reposListEl) {
+          reposListEl.innerHTML = `
+            <div style="grid-column: 1/-1; padding: 24px; text-align: center; color: var(--text-muted);">
+              No se encontró el usuario de GitHub <strong>@${escapeHtml(user)}</strong>.<br>
+              <button class="btn-load-repos" style="margin-top: 12px;" onclick="resetToOwner()">Volver a @FrankUsqAbant</button>
+            </div>
+          `;
+        }
+        return;
+      }
+      throw new Error('API Rate Limit or Network Error');
     }
+    
+    const repos = await res.json();
+    fetchedReposCache = Array.isArray(repos) ? repos : [];
+    
+    if (reposCountEl) reposCountEl.innerText = `${fetchedReposCache.length} Repos de @${escapeHtml(user)}`;
+    renderReposGrid(user, fetchedReposCache);
   } catch (e) {
-    if (reposCountEl) reposCountEl.innerText = 'Repositorios Conectados';
+    if (reposCountEl) reposCountEl.innerText = `Modo Sin Conexión / Repos Manuales`;
+    renderFallbackRepos(user);
   }
+}
+
+// ── Render Repos Grid ──
+function renderReposGrid(owner, repos) {
+  const reposListEl = document.getElementById('reposList');
+  if (!reposListEl) return;
+  
+  if (!repos || repos.length === 0) {
+    reposListEl.innerHTML = `
+      <div style="grid-column: 1/-1; padding: 24px; text-align: center; color: var(--text-muted);">
+        El usuario <strong>@${escapeHtml(owner)}</strong> no tiene repositorios públicos recientes.
+      </div>
+    `;
+    return;
+  }
+  
+  const html = repos.map(r => {
+    const safeName = escapeHtml(r.name);
+    const safeLang = escapeHtml(r.language || 'Web');
+    const safeStars = Number(r.stargazers_count) || 0;
+    const cleanRepoName = r.name.replace(/['"\\]/g, '');
+    const cleanOwner = owner.replace(/['"\\]/g, '');
+    
+    return `
+      <div class="repo-chip" id="repo-chip-${cleanRepoName}">
+        <div>
+          <div class="repo-chip-name" title="${safeName}">${safeName}</div>
+          <div class="repo-chip-meta">
+            <span>⭐ ${safeStars}</span>
+            <span>${safeLang}</span>
+          </div>
+        </div>
+        <button class="btn-choose-repo" onclick="selectRepository('${cleanOwner}', '${cleanRepoName}')">
+          ⚡ Elegir este Repositorio
+        </button>
+      </div>
+    `;
+  }).join('');
+  
+  reposListEl.innerHTML = html;
+}
+
+// ── Fallback Repositories if GitHub API is limited ──
+function renderFallbackRepos(owner) {
+  const reposListEl = document.getElementById('reposList');
+  if (!reposListEl) return;
+  
+  const presets = [
+    { name: 'OpenGravity', lang: 'HTML/JS', stars: 2 },
+    { name: 'proyecto-curso-html', lang: 'JavaScript', stars: 1 },
+    { name: 'youttube-git', lang: 'Git', stars: 1 },
+    { name: 'register', lang: 'HTML', stars: 1 }
+  ];
+  
+  const html = presets.map(r => `
+    <div class="repo-chip" id="repo-chip-${r.name}">
+      <div>
+        <div class="repo-chip-name">${r.name}</div>
+        <div class="repo-chip-meta">
+          <span>⭐ ${r.stars}</span>
+          <span>${r.lang}</span>
+        </div>
+      </div>
+      <button class="btn-choose-repo" onclick="selectRepository('${owner}', '${r.name}')">
+        ⚡ Elegir este Repositorio
+      </button>
+    </div>
+  `).join('');
+  
+  reposListEl.innerHTML = html;
+}
+
+// ── Filter Repositories in Real Time ──
+function filterRepos() {
+  const query = document.getElementById('repoFilterInput').value.toLowerCase().trim();
+  const userInput = document.getElementById('githubUserInput');
+  const owner = userInput.value.trim().replace(/^@/, '') || 'FrankUsqAbant';
+  
+  if (!query) {
+    renderReposGrid(owner, fetchedReposCache);
+    return;
+  }
+  
+  const filtered = fetchedReposCache.filter(r => 
+    r.name.toLowerCase().includes(query) || (r.language && r.language.toLowerCase().includes(query))
+  );
+  renderReposGrid(owner, filtered);
+}
+
+// ── Reset to FrankUsqAbant ──
+function resetToOwner() {
+  document.getElementById('githubUserInput').value = 'FrankUsqAbant';
+  document.getElementById('repoFilterInput').value = '';
+  fetchUserRepos();
 }
 
 // ── Init on DOM Load ──
